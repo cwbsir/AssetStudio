@@ -38,6 +38,7 @@ namespace AssetStudioGUI
         public static AssemblyLoader assemblyLoader = new AssemblyLoader();
         public static List<AssetItem> exportableAssets = new List<AssetItem>();
         public static List<AssetItem> visibleAssets = new List<AssetItem>();
+        public static List<AssetItem> redundanzAssets = new List<AssetItem>();
         internal static Action<string> StatusStripUpdate = x => { };
 
         public static int ExtractFolder(string path, string savePath)
@@ -248,11 +249,55 @@ namespace AssetStudioGUI
                     objectAssetItemDic[obj].Container = container;
                 }
             }
+
+            Dictionary<string, AssetItem> keyValuePairs = new Dictionary<string, AssetItem>();
             foreach (var tmp in exportableAssets)
             {
                 tmp.SetSubItems();
+
+                var key = Path.Combine(tmp.Name, tmp.m_PathID.ToString(), tmp.FullSize.ToString(), tmp.Type.ToString());
+                if (keyValuePairs.TryGetValue(key, out var assetItem))
+                {
+                    if (assetItem.Type == tmp.Type && assetItem.m_PathID == tmp.m_PathID && assetItem.FullSize == tmp.FullSize && assetItem.Name == tmp.Name)
+                    {
+                        assetItem.sameAssetCount++;
+                        assetItem.AllContainer += "\n" + tmp.Container;
+                    }
+                    else
+                    {
+                        var asset = tmp.clone();
+                        redundanzAssets.Add(asset);
+                    }
+                }
+                else
+                {
+                    var asset = tmp.clone();
+                    keyValuePairs.Add(key, asset);
+                }
             }
             containers.Clear();
+
+            foreach (var tmp in keyValuePairs.Values)
+            {
+                if (tmp.sameAssetCount > 1)
+                {
+                    tmp.SetSubItems2();
+                    redundanzAssets.Add(tmp);
+                }
+            }
+            for(int ii= redundanzAssets.Count-1; ii >= 0; ii--)
+            {
+                if (redundanzAssets[ii].sameAssetCount == 1)
+                {
+                    redundanzAssets.Remove(redundanzAssets[ii]);
+                }
+            }
+            redundanzAssets.Sort((a, b) =>
+            {
+                var asf = a.sameAssetCount;
+                var bsf = b.sameAssetCount;
+                return bsf.CompareTo(asf);
+            });
 
             visibleAssets = exportableAssets;
 
@@ -487,6 +532,52 @@ namespace AssetStudioGUI
                                         new XElement("PathID", asset.m_PathID),
                                         new XElement("Source", asset.SourceFile.fullName),
                                         new XElement("Size", asset.FullSize)
+                                    )
+                                )
+                            )
+                        );
+
+                        doc.Save(filename);
+
+                        break;
+                }
+
+                var statusText = $"Finished exporting asset list with {toExportAssets.Count()} items.";
+
+                StatusStripUpdate(statusText);
+
+                if (Properties.Settings.Default.openAfterExport && toExportAssets.Count() > 0)
+                {
+                    OpenFolderInExplorer(savePath);
+                }
+            });
+        }
+
+        public static void ExportRepeatAssetsList(string savePath, List<AssetItem> toExportAssets, ExportListType exportListType)
+        {
+            ThreadPool.QueueUserWorkItem(state =>
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+
+                Progress.Reset();
+
+                switch (exportListType)
+                {
+                    case ExportListType.XML:
+                        var filename = Path.Combine(savePath, "assets.xml");
+                        var doc = new XDocument(
+                            new XElement("Assets",
+                                new XAttribute("filename", filename),
+                                new XAttribute("createdAt", DateTime.UtcNow.ToString("s")),
+                                toExportAssets.Select(
+                                    asset => new XElement("Asset",
+                                        new XElement("Name", asset.Text),
+                                        new XElement("Type", new XAttribute("id", (int)asset.Type), asset.TypeString),
+                                        new XElement("PathID", asset.m_PathID),
+                                        new XElement("RepeatCount", asset.sameAssetCount),
+                                        new XElement("Size", ((float)asset.FullSize / 1024).ToString("F2") + " KB"),
+                                        new XElement("Redundance", ((asset.sameAssetCount - 1) * (float)asset.FullSize / 1024).ToString("F2") + " KB"),
+                                        new XElement("Containers", "\n\t\t"+asset.AllContainer.Replace("\n","\n\t\t")+"\n\t")
                                     )
                                 )
                             )

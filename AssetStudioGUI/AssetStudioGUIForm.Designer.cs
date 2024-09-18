@@ -79,7 +79,6 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.sceneTreeView = new AssetStudioGUI.GOHierarchy();
             this.treeSearch = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.assetListView = new System.Windows.Forms.ListView();
@@ -93,6 +92,14 @@
             this.classesListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.repeatAssetListView = new System.Windows.Forms.ListView();
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.progressbarPanel = new System.Windows.Forms.Panel();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.tabControl2 = new System.Windows.Forms.TabControl();
@@ -126,6 +133,8 @@
             this.exportAnimatorwithselectedAnimationClipMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.goToSceneHierarchyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showOriginalFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sceneTreeView = new AssetStudioGUI.GOHierarchy();
+            this.repeatListToXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -135,6 +144,7 @@
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.tabPage6.SuspendLayout();
             this.progressbarPanel.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage4.SuspendLayout();
@@ -339,7 +349,8 @@
             this.toolStripMenuItem2,
             this.toolStripMenuItem3,
             this.toolStripSeparator2,
-            this.toolStripMenuItem10});
+            this.toolStripMenuItem10,
+            this.repeatListToXMLToolStripMenuItem});
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
             this.exportToolStripMenuItem.Size = new System.Drawing.Size(58, 21);
             this.exportToolStripMenuItem.Text = "Export";
@@ -552,6 +563,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -572,17 +584,6 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Scene Hierarchy";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // sceneTreeView
-            // 
-            this.sceneTreeView.CheckBoxes = true;
-            this.sceneTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sceneTreeView.HideSelection = false;
-            this.sceneTreeView.Location = new System.Drawing.Point(0, 21);
-            this.sceneTreeView.Name = "sceneTreeView";
-            this.sceneTreeView.Size = new System.Drawing.Size(472, 587);
-            this.sceneTreeView.TabIndex = 1;
-            this.sceneTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.sceneTreeView_AfterCheck);
             // 
             // treeSearch
             // 
@@ -708,6 +709,66 @@
             this.columnHeader2.DisplayIndex = 0;
             this.columnHeader2.Text = "ID";
             this.columnHeader2.Width = 70;
+            // 
+            // tabPage6
+            // 
+            this.tabPage6.Controls.Add(this.repeatAssetListView);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(472, 608);
+            this.tabPage6.TabIndex = 3;
+            this.tabPage6.Text = "重复资源";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // repeatAssetListView
+            // 
+            this.repeatAssetListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader3,
+            this.columnHeader4,
+            this.columnHeader5,
+            this.columnHeader6,
+            this.columnHeader7,
+            this.columnHeader8});
+            this.repeatAssetListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.repeatAssetListView.FullRowSelect = true;
+            this.repeatAssetListView.HideSelection = false;
+            this.repeatAssetListView.Location = new System.Drawing.Point(3, 3);
+            this.repeatAssetListView.Name = "repeatAssetListView";
+            this.repeatAssetListView.Size = new System.Drawing.Size(466, 602);
+            this.repeatAssetListView.TabIndex = 0;
+            this.repeatAssetListView.UseCompatibleStateImageBehavior = false;
+            this.repeatAssetListView.View = System.Windows.Forms.View.Details;
+            this.repeatAssetListView.VirtualMode = true;
+            this.repeatAssetListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.repeatAssetListView_ItemSelectionChanged);
+            this.repeatAssetListView.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.repeatAssetListView_RetrieveVirtualItem);
+            this.repeatAssetListView.SelectedIndexChanged += new System.EventHandler(this.repeatAssetListView_SelectedIndexChanged);
+            this.repeatAssetListView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.repeatAssetListView_MouseClick);
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Name";
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "PathID";
+            this.columnHeader4.Width = 109;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "资源类型";
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "相同数量";
+            // 
+            // columnHeader7
+            // 
+            this.columnHeader7.Text = "单个大小";
+            // 
+            // columnHeader8
+            // 
+            this.columnHeader8.Text = "冗余大小";
             // 
             // progressbarPanel
             // 
@@ -1063,6 +1124,24 @@
             this.showOriginalFileToolStripMenuItem.Visible = false;
             this.showOriginalFileToolStripMenuItem.Click += new System.EventHandler(this.showOriginalFileToolStripMenuItem_Click);
             // 
+            // sceneTreeView
+            // 
+            this.sceneTreeView.CheckBoxes = true;
+            this.sceneTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sceneTreeView.HideSelection = false;
+            this.sceneTreeView.Location = new System.Drawing.Point(0, 21);
+            this.sceneTreeView.Name = "sceneTreeView";
+            this.sceneTreeView.Size = new System.Drawing.Size(472, 587);
+            this.sceneTreeView.TabIndex = 1;
+            this.sceneTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.sceneTreeView_AfterCheck);
+            // 
+            // repeatListToXMLToolStripMenuItem
+            // 
+            this.repeatListToXMLToolStripMenuItem.Name = "repeatListToXMLToolStripMenuItem";
+            this.repeatListToXMLToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.repeatListToXMLToolStripMenuItem.Text = "Repeat list to XML";
+            this.repeatListToXMLToolStripMenuItem.Click += new System.EventHandler(this.repeatListToXMLToolStripMenuItem_Click);
+            // 
             // AssetStudioGUIForm
             // 
             this.AllowDrop = true;
@@ -1092,6 +1171,7 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
+            this.tabPage6.ResumeLayout(false);
             this.progressbarPanel.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
@@ -1209,6 +1289,15 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem14;
         private System.Windows.Forms.ToolStripTextBox specifyUnityVersion;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem15;
+        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.ListView repeatAssetListView;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ColumnHeader columnHeader6;
+        private System.Windows.Forms.ColumnHeader columnHeader7;
+        private System.Windows.Forms.ColumnHeader columnHeader8;
+        private System.Windows.Forms.ToolStripMenuItem repeatListToXMLToolStripMenuItem;
     }
 }
 

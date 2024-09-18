@@ -240,6 +240,9 @@ namespace AssetStudioGUI
             typeMap.Clear();
             classesListView.EndUpdate();
 
+            repeatAssetListView.VirtualListSize = redundanzAssets.Count;
+
+
             var types = exportableAssets.Select(x => x.Type).Distinct().OrderBy(x => x.ToString()).ToArray();
             foreach (var type in types)
             {
@@ -2047,6 +2050,69 @@ namespace AssetStudioGUI
         private void toolStripMenuItem15_Click(object sender, EventArgs e)
         {
             logger.ShowErrorMessage = toolStripMenuItem15.Checked;
+        }
+
+        private void repeatAssetListView_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        {
+            e.Item = redundanzAssets[e.ItemIndex];
+        }
+
+        private void repeatAssetListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void repeatAssetListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            previewPanel.BackgroundImage = Properties.Resources.preview;
+            previewPanel.BackgroundImageLayout = ImageLayout.Center;
+            classTextBox.Visible = false;
+            assetInfoLabel.Visible = false;
+            assetInfoLabel.Text = null;
+            textPreviewBox.Visible = false;
+            fontPreviewBox.Visible = false;
+            FMODpanel.Visible = false;
+            glControl1.Visible = false;
+            StatusStripUpdate("");
+
+            FMODreset();
+
+            lastSelectedItem = (AssetItem)e.Item;
+
+            if (e.IsSelected)
+            {
+                if (tabControl2.SelectedIndex == 1)
+                {
+                    dumpTextBox.Text = DumpAsset(lastSelectedItem.Asset);
+                }
+                if (enablePreview.Checked)
+                {
+                    PreviewText(("包含此资源的AssetBundle:\n" + lastSelectedItem.AllContainer).Replace("\n", "\r\n").Replace("\0", ""));
+                    if (displayInfo.Checked && lastSelectedItem.InfoText != null)
+                    {
+                        assetInfoLabel.Text = lastSelectedItem.InfoText;
+                        assetInfoLabel.Visible = true;
+                    }
+                }
+            }
+        }
+
+        private void repeatAssetListView_MouseClick(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void repeatListToXMLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var saveFolderDialog = new OpenFolderDialog();
+            saveFolderDialog.InitialFolder = saveDirectoryBackup;
+            if (saveFolderDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                timer.Stop();
+                saveDirectoryBackup = saveFolderDialog.Folder;
+                Studio.ExportRepeatAssetsList(saveFolderDialog.Folder, redundanzAssets, ExportListType.XML);
+            }
+
         }
 
         private void glControl1_MouseWheel(object sender, MouseEventArgs e)
