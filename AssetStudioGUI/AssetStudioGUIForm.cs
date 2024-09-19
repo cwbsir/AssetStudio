@@ -81,6 +81,10 @@ namespace AssetStudioGUI
         private System.Timers.Timer delayTimer;
         private bool enableFiltering;
 
+        //repeat list sorting
+        private int repeatSortColumn = - 1;
+        private bool repeatReverseSort;
+
         //tree search
         private int nextGObject;
         private List<TreeNode> treeSrcResults = new List<TreeNode>();
@@ -594,6 +598,7 @@ namespace AssetStudioGUI
 
         private void assetListView_ColumnClick(object sender, ColumnClickEventArgs e)
         {
+            Debug.WriteLine("assetListView_ColumnClick");
             if (sortColumn != e.Column)
             {
                 reverseSort = false;
@@ -2113,6 +2118,58 @@ namespace AssetStudioGUI
                 Studio.ExportRepeatAssetsList(saveFolderDialog.Folder, redundanzAssets, ExportListType.XML);
             }
 
+        }
+
+        private void repeatAssetListView_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (repeatSortColumn != e.Column)
+            {
+                repeatReverseSort = false;
+            }
+            else
+            {
+                repeatReverseSort = !repeatReverseSort;
+            }
+            repeatSortColumn = e.Column;
+            repeatAssetListView.BeginUpdate();
+            repeatAssetListView.SelectedIndices.Clear();
+            if (repeatSortColumn == 4) //FullSize
+            {
+                redundanzAssets.Sort((a, b) =>
+                {
+                    var asf = a.FullSize;
+                    var bsf = b.FullSize;
+                    return repeatReverseSort ? bsf.CompareTo(asf) : asf.CompareTo(bsf);
+                });
+            }
+            else if (repeatSortColumn == 5) // 冗余大小
+            {
+                redundanzAssets.Sort((a, b) =>
+                {
+                    long redundanzA = (a.sameAssetCount - 1) * a.FullSize;
+                    long redundanzB = (b.sameAssetCount - 1) * b.FullSize;
+                    return repeatReverseSort ? redundanzB.CompareTo(redundanzA) : redundanzA.CompareTo(redundanzB);
+                });
+            }
+            else if (repeatSortColumn == 1) // PathID
+            {
+                redundanzAssets.Sort((x, y) =>
+                {
+                    long pathID_X = x.m_PathID;
+                    long pathID_Y = y.m_PathID;
+                    return repeatReverseSort ? pathID_Y.CompareTo(pathID_X) : pathID_X.CompareTo(pathID_Y);
+                });
+            }
+            else
+            {
+                redundanzAssets.Sort((a, b) =>
+                {
+                    var at = a.SubItems[repeatSortColumn].Text;
+                    var bt = b.SubItems[repeatSortColumn].Text;
+                    return repeatReverseSort ? bt.CompareTo(at) : at.CompareTo(bt);
+                });
+            }
+            repeatAssetListView.EndUpdate();
         }
 
         private void glControl1_MouseWheel(object sender, MouseEventArgs e)

@@ -71,6 +71,7 @@
             this.toolStripMenuItem11 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem13 = new System.Windows.Forms.ToolStripMenuItem();
+            this.repeatListToXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.filterTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,6 +80,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.sceneTreeView = new AssetStudioGUI.GOHierarchy();
             this.treeSearch = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.assetListView = new System.Windows.Forms.ListView();
@@ -133,8 +135,6 @@
             this.exportAnimatorwithselectedAnimationClipMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.goToSceneHierarchyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showOriginalFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sceneTreeView = new AssetStudioGUI.GOHierarchy();
-            this.repeatListToXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -491,6 +491,13 @@
             this.toolStripMenuItem13.Text = "Filtered assets";
             this.toolStripMenuItem13.Click += new System.EventHandler(this.toolStripMenuItem13_Click);
             // 
+            // repeatListToXMLToolStripMenuItem
+            // 
+            this.repeatListToXMLToolStripMenuItem.Name = "repeatListToXMLToolStripMenuItem";
+            this.repeatListToXMLToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
+            this.repeatListToXMLToolStripMenuItem.Text = "Repeat list to XML";
+            this.repeatListToXMLToolStripMenuItem.Click += new System.EventHandler(this.repeatListToXMLToolStripMenuItem_Click);
+            // 
             // filterTypeToolStripMenuItem
             // 
             this.filterTypeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -584,6 +591,17 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Scene Hierarchy";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // sceneTreeView
+            // 
+            this.sceneTreeView.CheckBoxes = true;
+            this.sceneTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sceneTreeView.HideSelection = false;
+            this.sceneTreeView.Location = new System.Drawing.Point(0, 21);
+            this.sceneTreeView.Name = "sceneTreeView";
+            this.sceneTreeView.Size = new System.Drawing.Size(472, 587);
+            this.sceneTreeView.TabIndex = 1;
+            this.sceneTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.sceneTreeView_AfterCheck);
             // 
             // treeSearch
             // 
@@ -740,6 +758,7 @@
             this.repeatAssetListView.UseCompatibleStateImageBehavior = false;
             this.repeatAssetListView.View = System.Windows.Forms.View.Details;
             this.repeatAssetListView.VirtualMode = true;
+            this.repeatAssetListView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.repeatAssetListView_ColumnClick);
             this.repeatAssetListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.repeatAssetListView_ItemSelectionChanged);
             this.repeatAssetListView.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.repeatAssetListView_RetrieveVirtualItem);
             this.repeatAssetListView.SelectedIndexChanged += new System.EventHandler(this.repeatAssetListView_SelectedIndexChanged);
@@ -1123,24 +1142,6 @@
             this.showOriginalFileToolStripMenuItem.Text = "Show original file";
             this.showOriginalFileToolStripMenuItem.Visible = false;
             this.showOriginalFileToolStripMenuItem.Click += new System.EventHandler(this.showOriginalFileToolStripMenuItem_Click);
-            // 
-            // sceneTreeView
-            // 
-            this.sceneTreeView.CheckBoxes = true;
-            this.sceneTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sceneTreeView.HideSelection = false;
-            this.sceneTreeView.Location = new System.Drawing.Point(0, 21);
-            this.sceneTreeView.Name = "sceneTreeView";
-            this.sceneTreeView.Size = new System.Drawing.Size(472, 587);
-            this.sceneTreeView.TabIndex = 1;
-            this.sceneTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.sceneTreeView_AfterCheck);
-            // 
-            // repeatListToXMLToolStripMenuItem
-            // 
-            this.repeatListToXMLToolStripMenuItem.Name = "repeatListToXMLToolStripMenuItem";
-            this.repeatListToXMLToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
-            this.repeatListToXMLToolStripMenuItem.Text = "Repeat list to XML";
-            this.repeatListToXMLToolStripMenuItem.Click += new System.EventHandler(this.repeatListToXMLToolStripMenuItem_Click);
             // 
             // AssetStudioGUIForm
             // 
