@@ -750,6 +750,7 @@
             this.columnHeader8});
             this.repeatAssetListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.repeatAssetListView.FullRowSelect = true;
+            this.repeatAssetListView.GridLines = true;
             this.repeatAssetListView.HideSelection = false;
             this.repeatAssetListView.Location = new System.Drawing.Point(3, 3);
             this.repeatAssetListView.Name = "repeatAssetListView";
@@ -784,10 +785,12 @@
             // columnHeader7
             // 
             this.columnHeader7.Text = "单个大小";
+            this.columnHeader7.Width = 100;
             // 
             // columnHeader8
             // 
             this.columnHeader8.Text = "冗余大小";
+            this.columnHeader8.Width = 100;
             // 
             // progressbarPanel
             // 

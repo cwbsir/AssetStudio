@@ -2104,7 +2104,16 @@ namespace AssetStudioGUI
 
         private void repeatAssetListView_MouseClick(object sender, MouseEventArgs e)
         {
+            if (e.Button == MouseButtons.Right && repeatAssetListView.SelectedIndices.Count > 0)
+            {
+                exportSelectedAssetsToolStripMenuItem.Visible = false;
+                goToSceneHierarchyToolStripMenuItem.Visible = false;
+                showOriginalFileToolStripMenuItem.Visible = false;
+                exportAnimatorwithselectedAnimationClipMenuItem.Visible = false;
 
+                tempClipboard = repeatAssetListView.HitTest(new Point(e.X, e.Y)).SubItem.Text;
+                contextMenuStrip1.Show(repeatAssetListView, e.X, e.Y);
+            }
         }
 
         private void repeatListToXMLToolStripMenuItem_Click(object sender, EventArgs e)
